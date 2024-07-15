@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tidens Okarina - Svensk översättning av Ocarina of Time</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- SVG filter for noise -->
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: none;">
+        <defs>
+            <filter id="noise">
+                <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+                <feComposite operator="in" in2="SourceGraphic" result="monoNoise"/>
+                <feBlend in="SourceGraphic" in2="monoNoise" mode="screen"/>
+            </filter>
+        </defs>
+    </svg>
+
+    <div class="content-wrapper" id="welcome-content">
+        <h1>Tidens Okarina</h1>
+        <div class="ocarina-image"></div>
+        <h2>En svensk översättning av Ocarina of Time</h2>
+        <p>Välkommen till "Tidens Okarina", en svensk översättning av spelet "The Legend of Zelda: Ocarina of Time". Översatt av Peter Vrilya Brink, detta projekt syftar till att bringa Hyrules magiska värld närmare svenska spelare.</p>
+        <p>Upplev äventyret, utforska de mystiska skogarna och rädda kungariket på ditt modersmål. Låt musiken från okarinen vägleda dig genom tid och rum i denna episka saga.</p>
+        <div style="text-align: center;">
+            <a href="#" class="btn" onclick="showDownloadContent()">Ladda ner översättningen</a>
+            <a href="https://github.com/vrilya" class="btn">Besök GitHub</a>
+            <button class="btn" onclick="showProjectInfo()">Om projektet</button>
+        </div>
+    </div>
+
+    <div class="content-wrapper hidden" id="project-info">
+        <div class="back-button" onclick="showWelcomeContent()"></div>
+        <h1>Om projektet</h1>
+        <p>Detta projekt är resultatet av en djupgående studie och utveckling av anpassade verktyg för att översätta "The Legend of Zelda: Ocarina of Time" till svenska.</p>
+        <p>För att genomföra detta har jag använt följande verktyg:</p>
+        <ul>
+            <li>Notepad++ och Python - Utveckling av alla verktyg för att hantera text och bitmap.</li>
+            <li>Gimp - Redigering av extraherade bilder.</li>
+            <li>Ghidra - Analys och dokumentering av PAL-romen.</li>
+            <li>HxD - Analys av PAL-romen i dess råa form.</li>
+            <li>Project64 - Debugga och testa ändringar i realtid.</li>
+            <li>Jag har även använt Zeldarets dekompilering av Master Quest för att förstå spelets struktur.</li>
+        </ul>
+        <p>Översättningen ligger närmare den japanska originaltexten. Detta beror på att en del av spelets humor och vissa nyanser har ändrats markant i den engelska versionen. Genom att utgå från den japanska texten försöker jag bevara spelets ursprungliga känsla och betydelse.</p>
+        <div class="arrow-button right" onclick="showProjectStart()"></div>
+    </div>
+
+    <div class="content-wrapper hidden" id="project-start">
+        <div class="back-button" onclick="showWelcomeContent()"></div>
+        <div class="arrow-button left" onclick="showProjectInfo()"></div>
+        <h1>Projektets början</h1>
+        <p>Detta projekt inleddes 2022 på Discord-servern för Open Ocarina of Time (OOOT), ett initiativ för att porta Ocarina of Time till PC från Zeldarets dekompilering av Ocarina of Time Master Quest.</p>
+        <p>Projektledaren frågade om det fanns intresse för att skriva översättningar till hans portning, och jag tillsammans med en annan medlem kallad Tatsker, tog på oss uppgiften. Tyvärr blev det inte mycket av det, då projektledaren avbröt portningen innan stöd för andra tecken än de som redan fanns i spelet hann implementeras.</p>
+        <p>Vid ett senare tillfälle bestämde jag mig för att inte överge idén om en svensk översättning av Ocarina of Time, så jag tog på mig uppgiften att skapa en översättning som skulle fungera direkt med ROM-filen, så att den kunde spelas på en riktig N64.</p>
+        <p>Detta innebar att textformateringen i spelet blev extra viktig, och jag ville att det skulle se så snyggt ut som möjligt. För att uppnå detta behövde jag ha full kontroll över översättningen, vilket innebar att jag fick börja om från början.</p>
+    </div>
+
+    <div class="content-wrapper hidden" id="download-content">
+        <div class="back-button" onclick="showWelcomeContent()"></div>
+        <h1>Ladda ner översättningen</h1>
+        <p>Välj rätt patch beroende på vilken version av spelet du har:</p>
+        
+        <a href="#" class="download-link">Ladda ner patch för PAL-versionen</a>
+        <a href="#" class="download-link">Ladda ner patch för NTSC-versionen</a>
+        
+        <div class="md5-info">
+            <h3>Viktigt att notera:</h3>
+            <p>För att säkerställa att patchen fungerar korrekt, kontrollera att din ROM-fil har rätt MD5-checksumma:</p>
+            <ul>
+                <li>PAL-versionen: <strong>E040DE91A74B61E3201DB0E2323F768A</strong></li>
+                <li>NTSC-versionen: <strong>5BD1FE107BF8106B2AB6650ABECD54D6</strong></li>
+            </ul>
+            <p>Om din ROM inte matchar dessa checksummor, kan det hända att patchen inte fungerar som den ska.</p>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
