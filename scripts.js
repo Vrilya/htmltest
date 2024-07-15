@@ -6,8 +6,12 @@ function createFairy() {
     const colors = ['red', 'green', 'white'];
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
     fairy.classList.add('fairy', randomColor);
-    fairy.style.left = Math.random() * (window.innerWidth - 20) + 10 + 'px';
-    fairy.style.top = Math.random() * (window.innerHeight - 20) + 10 + 'px';
+
+    const maxLeft = Math.max(window.innerWidth - 20, 10);
+    const maxTop = Math.max(window.innerHeight - 20, 10);
+
+    fairy.style.left = Math.random() * maxLeft + 'px';
+    fairy.style.top = Math.random() * maxTop + 'px';
     document.body.appendChild(fairy);
 
     setTimeout(() => {
@@ -18,29 +22,32 @@ function createFairy() {
 function createBackgroundElement(type) {
     const element = document.createElement('div');
     element.classList.add('background-element', type);
-    
+
+    const maxLeft = Math.max(window.innerWidth - 60, 30);
+    const maxTop = Math.max(window.innerHeight - 100, 50);
+
     if (type === 'background-image') {
         const gridX = Math.floor(Math.random() * (window.innerWidth / gridSize));
         const gridY = Math.floor(Math.random() * (window.innerHeight / gridSize));
-        
+
         element.style.left = (gridX * gridSize + Math.random() * 20 - 10) + 'px';
         element.style.top = (gridY * gridSize + Math.random() * 20 - 10) + 'px';
-        
+
         element.style.animationName = 'rotateSlowly';
         element.style.animationDuration = (Math.random() * 20 + 10) + 's';
         element.style.animationTimingFunction = 'linear';
         element.style.animationIterationCount = 'infinite';
-        
+
         setTimeout(() => {
             element.style.opacity = (Math.random() * 0.3 + 0.1).toString();
         }, 100);
 
         backgroundImages.push(element);
     } else {
-        element.style.left = Math.random() * (window.innerWidth - 60) + 30 + 'px';
-        element.style.top = Math.random() * (window.innerHeight - 100) + 50 + 'px';
+        element.style.left = Math.random() * maxLeft + 'px';
+        element.style.top = Math.random() * maxTop + 'px';
     }
-    
+
     document.body.appendChild(element);
 
     if (type === 'background-image') {

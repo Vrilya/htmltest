@@ -206,6 +206,51 @@ p {
     100% { transform: rotate(405deg); }
 }
 
+@media (max-width: 600px) {
+    .content-wrapper {
+        width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+
+    .download-link {
+        font-size: 0.9em;
+        padding: 8px 16px;
+    }
+
+    .md5-info {
+        font-size: 0.8em;
+    }
+
+    .arrow-button, .back-button {
+        width: 30px;
+        height: 30px;
+    }
+
+    .arrow-button::before, .back-button::before {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+/* För att undvika horisontell scroll */
+body, html {
+    overflow-x: hidden;
+}
+
 .arrow-button {
     position: absolute;
     top: 50%;
