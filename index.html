@@ -3,11 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="image.png" type="image/png">
     <title>Tidens Okarina - Svensk översättning av Ocarina of Time</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Open+Sans&display=swap');
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Open Sans', sans-serif;
+            color: #f0f0f0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0a3d62, #3c6382);
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a3d62, #3c6382);
+            background-attachment: fixed;
+            filter: url(#noise);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        h2:first-of-type {
+            font-size: 1.5em;
+            margin-bottom: 0px;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .content-wrapper {
+            max-width: 800px;
+            width: 90%;
+            padding: 30px;
+            background: rgba(10, 61, 98, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        .content-wrapper.hidden {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.95);
+            pointer-events: none;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+			margin-top: 0px;
+        }
+
+        h3 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s;
+            font-weight: bold;
+            margin: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .ocarina-image {
+            width: 128px;
+            height: 110px;
+            background-image: url('image.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin: 30px auto;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
+            animation: glowPulse 2s infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            from {
+                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
+            }
+            to {
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9));
+            }
+        }
+
+        .fairy {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.8);
+            animation: flyAround 10s infinite ease-in-out, fadeInOut 10s forwards;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .fairy.red {
+            background: #ff5555;
+            box-shadow: 0 0 10px 5px rgba(255, 85, 85, 0.8);
+        }
+
+        .fairy.green {
+            background: #55ff55;
+            box-shadow: 0 0 10px 5px rgba(85, 255, 85, 0.8);
+        }
+
+        .fairy.white {
+            background: #ffffff;
+        }
+
+        @keyframes flyAround {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(0.8); }
+            50% { transform: translate(100px, 0) scale(1.2); }
+            75% { transform: translate(50px, 50px) scale(0.9); }
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            10%, 90% { opacity: 0.7; }
+        }
+
+        .background-element {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .background-image {
+            position: absolute;
+            width: 64px;
+            height: 55px;
+            background-image: url('image.png');
+            background-size: cover;
+            opacity: 0;
+            transition: opacity 2s ease-in-out, transform 10s ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes rotateSlowly {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 215, 0, 0.2);
+            border: 2px solid #ffd700;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 215, 0, 0.4);
+        }
+
+        .back-button::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-left: 3px solid #ffd700;
+            border-bottom: 3px solid #ffd700;
+            transform: rotate(45deg);
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover::before {
+            animation: rotateArrow 0.5s forwards;
+        }
+
+        @keyframes rotateArrow {
+            0% { transform: rotate(45deg); }
+            100% { transform: rotate(405deg); }
+        }
+
+        .arrow-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background: none;
+            border: none;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .arrow-button::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border-top: 3px solid #ffd700;
+            border-right: 3px solid #ffd700;
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+        }
+
+        .arrow-button:hover::before {
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+            transform: rotate(45deg) scale(1.2);
+        }
+
+        .arrow-button.left {
+            left: 20px;
+        }
+
+        .arrow-button.left::before {
+            transform: rotate(-135deg);
+        }
+
+        .arrow-button.left:hover::before {
+            transform: rotate(-135deg) scale(1.2);
+        }
+
+        .arrow-button.right {
+            right: 20px;
+        }
+
+        .content-wrapper {
+            padding-left: 80px;
+            padding-right: 80px;
+        }
+
+        .download-link {
+            display: block;
+            margin: 15px 0;
+            padding: 10px 20px;
+            background-color: #ffd700;
+            color: #0a3d62;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .download-link:hover {
+            background-color: #ffec8b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .md5-info {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+
+        .md5-info h4 {
+            margin-top: 0;
+            color: #ffd700;
+        }
+
+        /* Nya stilar för 'Patcha din ROM'-fönstret */
+        .file-input-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .file-status {
+            margin-left: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .file-status.valid {
+            background-color: #4CAF50;
+        }
+
+        .file-status.invalid {
+            background-color: #f44336;
+        }
+
+        .file-status::before {
+            content: '\2714'; /* Checkmark */
+        }
+
+        .file-status.invalid::before {
+            content: '\2716'; /* Cross */
+        }
+
+        .file-input-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .file-input-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .file-input-button:hover {
+            background-color: #45a049;
+        }
+
+        .file-name {
+            margin-left: 15px;
+            color: #f0f0f0;
+        }
+
+        .patch-button {
+            background-color: #ffd700;
+            color: #0a3d62;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .patch-button:hover {
+            background-color: #ffec8b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .credits {
+            margin-top: 30px;
+            font-size: 0.8em;
+            color: #ccc;
+            text-align: center;
+        }
+
+        .credits a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+
+        .credits a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <!-- SVG filter for noise -->
+    <!-- SVG filter för brus -->
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: none;">
         <defs>
             <filter id="noise">
@@ -19,6 +420,7 @@
     </svg>
 
     <div class="content-wrapper" id="welcome-content">
+        <h2>Legenden om Zelda</h2>
         <h1>Tidens Okarina</h1>
         <div class="ocarina-image"></div>
         <h2>En svensk översättning av Ocarina of Time</h2>
@@ -33,7 +435,7 @@
 
     <div class="content-wrapper hidden" id="project-info">
         <div class="back-button" onclick="showWelcomeContent()"></div>
-        <h1>Om projektet</h1>
+        <h3>Om projektet</h3>
         <p>Detta projekt är resultatet av en djupgående studie och utveckling av anpassade verktyg för att översätta "The Legend of Zelda: Ocarina of Time" till svenska.</p>
         <p>För att genomföra detta har jag använt följande verktyg:</p>
         <ul>
@@ -51,32 +453,363 @@
     <div class="content-wrapper hidden" id="project-start">
         <div class="back-button" onclick="showWelcomeContent()"></div>
         <div class="arrow-button left" onclick="showProjectInfo()"></div>
-        <h1>Projektets början</h1>
-        <p>Detta projekt inleddes 2022 på Discord-servern för Open Ocarina of Time (OOOT), ett initiativ för att porta Ocarina of Time till PC från Zeldarets dekompilering av Ocarina of Time Master Quest.</p>
-        <p>Projektledaren frågade om det fanns intresse för att skriva översättningar till hans portning, och jag tillsammans med en annan medlem kallad Tatsker, tog på oss uppgiften. Tyvärr blev det inte mycket av det, då projektledaren avbröt portningen innan stöd för andra tecken än de som redan fanns i spelet hann implementeras.</p>
-        <p>Vid ett senare tillfälle bestämde jag mig för att inte överge idén om en svensk översättning av Ocarina of Time, så jag tog på mig uppgiften att skapa en översättning som skulle fungera direkt med ROM-filen, så att den kunde spelas på en riktig N64.</p>
-        <p>Detta innebar att textformateringen i spelet blev extra viktig, och jag ville att det skulle se så snyggt ut som möjligt. För att uppnå detta behövde jag ha full kontroll över översättningen, vilket innebar att jag fick börja om från början.</p>
+        <h3>Projektets början</h3>
+        <p>Det här projektet inleddes 2022 på Discord-servern för Open Ocarina of Time (OOOT), ett initiativ för att porta Ocarina of Time till PC baserat på Zeldarets dekompilering av Ocarina of Time Master Quest.</p>
+        <p>Projektledaren frågade om det fanns intresse för att skriva översättningar till hans portning, och jag, tillsammans med en annan medlem kallad Tatsker, tog på oss uppgiften att skriva en svensk översättning. Tyvärr blev det inte mycket av det i slutändan, då projektledaren försvann innan stöd för andra tecken än de som redan fanns i spelet hann implementeras.</p>
+        <p>Vid ett senare tillfälle bestämde jag mig för att inte överge idén om en svensk översättning av Ocarina of Time. Jag beslutade att skapa en översättning som skulle fungera direkt med ROM-filen, så att den kunde spelas på en riktig N64 eller emulator, samt fungera med Ship of Harkinian.</p>
+        <p>Detta innebar att textformateringen i spelet blev extra viktig, och jag ville att det skulle se så snyggt ut som möjligt. För att uppnå detta behövde jag ha full kontroll över översättningen och valde att genomföra det själv, vilket innebar att jag fick börja om från början.</p>
+       <div class="arrow-button right" onclick="showWhyNot()"></div>
     </div>
 
     <div class="content-wrapper hidden" id="download-content">
         <div class="back-button" onclick="showWelcomeContent()"></div>
-        <h1>Ladda ner översättningen</h1>
+        <h3>Ladda ner översättningen</h3>
         <p>Välj rätt patch beroende på vilken version av spelet du har:</p>
         
         <a href="#" class="download-link">Ladda ner patch för PAL-versionen</a>
         <a href="#" class="download-link">Ladda ner patch för NTSC-versionen</a>
-        
+
         <div class="md5-info">
-            <h3>Viktigt att notera:</h3>
+            <h4>Viktigt att notera:</h4>
             <p>För att säkerställa att patchen fungerar korrekt, kontrollera att din ROM-fil har rätt MD5-checksumma:</p>
             <ul>
                 <li>PAL-versionen: <strong>E040DE91A74B61E3201DB0E2323F768A</strong></li>
                 <li>NTSC-versionen: <strong>5BD1FE107BF8106B2AB6650ABECD54D6</strong></li>
             </ul>
-            <p>Om din ROM inte matchar dessa checksummor, kan det hända att patchen inte fungerar som den ska.</p>
+            <p>Om din ROM inte matchar någon av dessa checksummor kommer patchen inte att fungera.</p>
+        </div>
+        <center><button class="btn" onclick="showPatchRomContent()">Patcha din ROM här</button></center>
+    </div>
+
+    <div class="content-wrapper hidden" id="patch-rom-content">
+        <div class="back-button" onclick="showWelcomeContent()"></div>
+        <div class="arrow-button left" onclick="showDownloadContent()"></div>
+        <h3>Patcha din ROM</h3>
+        <div class="file-input-container">
+            <button class="file-input-button" onclick="document.getElementById('romFile').click()">Välj ROM-fil</button>
+            <span id="romFileName" class="file-name">Ingen fil vald</span>
+            <div id="romFileStatus" class="file-status" style="display: none;"></div>
+            <input type="file" id="romFile" accept=".z64" style="display: none;" onchange="handleRomFileChange()">
+        </div>
+        <div class="file-input-container">
+            <button id="bpsFileButton" class="file-input-button" onclick="document.getElementById('bpsFile').click()" disabled>Välj BPS-patch</button>
+            <span id="bpsFileName" class="file-name">Ingen fil vald</span>
+            <div id="bpsFileStatus" class="file-status" style="display: none;"></div>
+            <input type="file" id="bpsFile" accept=".bps" style="display: none;" onchange="handleBpsFileChange()">
+        </div>
+        <button id="patchButton" class="patch-button" onclick="patchRom()" disabled>Patcha ROM</button>
+        <a id="downloadLink" class="download-link" style="display:none;">Ladda ner patchad ROM</a>
+        <div class="credits">
+            <p>Det här verktyget (<a href="https://github.com/marcrobledo/RomPatcher.js/">Rom Patcher JS</a>) är utvecklat av <a href="https://www.marcrobledo.com/">Marc Robledo</a>.</p>
         </div>
     </div>
 
-    <script src="scripts.js"></script>
+    <div class="content-wrapper hidden" id="why-not">
+        <div class="back-button" onclick="showWelcomeContent()"></div>
+        <div class="arrow-button left" onclick="showProjectStart()"></div>
+        <h3>Varför inte?</h3>
+        <p>Jag tänkte att om jag ändå ska genomföra ett sådant här projekt, varför inte göra det till något roligt och skapa mina egna verktyg samtidigt som jag lär mig om spelets uppbyggnad?</p>
+        <p>Genom att sätta mig in i spelets struktur har jag lärt mig att skriva smarta skript för att hitta var bitmap-bilderna i spelet potentiellt ligger. Därefter identifierar jag deras format manuellt och sparar informationen i en inställningsfil. På så sätt har jag kunnat skapa ett system som snabbt extraherar alla bilder och konverterar dem till PNG-format.</p>
+        <p>När jag har redigerat bilderna i Gimp, behöver jag bara klicka på injicera för att konvertera tillbaka alla bilder till deras ursprungliga bitmap-format och placera dem på rätt offset i ROM-filen.</p>
+        <p>Samma princip gäller för spelets text. Jag extraherar texttabellen och spelets texter, redigerar dem i min egen editor, och injicerar sedan den uppdaterade tabellen och texten tillbaka till rätt offset i ROM-filen.</p>
+    </div>
+
+    <script>
+        const backgroundImages = [];
+        const gridSize = 100; // Storlek på varje rutnätscell
+        let romCrc32 = '';
+        let bpsCrc32 = '';
+
+        function createFairy() {
+            const fairy = document.createElement('div');
+            const colors = ['red', 'green', 'white'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            fairy.classList.add('fairy', randomColor);
+            fairy.style.left = Math.random() * (window.innerWidth - 20) + 10 + 'px';
+            fairy.style.top = Math.random() * (window.innerHeight - 20) + 10 + 'px';
+            document.body.appendChild(fairy);
+
+            setTimeout(() => {
+                fairy.remove();
+            }, 10000);
+        }
+
+        function createBackgroundElement(type) {
+            const element = document.createElement('div');
+            element.classList.add('background-element', type);
+            
+            if (type === 'background-image') {
+                const gridX = Math.floor(Math.random() * (window.innerWidth / gridSize));
+                const gridY = Math.floor(Math.random() * (window.innerHeight / gridSize));
+                
+                element.style.left = (gridX * gridSize + Math.random() * 20 - 10) + 'px';
+                element.style.top = (gridY * gridSize + Math.random() * 20 - 10) + 'px';
+                
+                element.style.animationName = 'rotateSlowly';
+                element.style.animationDuration = (Math.random() * 20 + 10) + 's';
+                element.style.animationTimingFunction = 'linear';
+                element.style.animationIterationCount = 'infinite';
+                
+                setTimeout(() => {
+                    element.style.opacity = (Math.random() * 0.3 + 0.1).toString();
+                }, 100);
+
+                backgroundImages.push(element);
+            } else {
+                element.style.left = Math.random() * (window.innerWidth - 60) + 30 + 'px';
+                element.style.top = Math.random() * (window.innerHeight - 100) + 50 + 'px';
+            }
+            
+            document.body.appendChild(element);
+
+            if (type === 'background-image') {
+                fadeOutAndRemove(element);
+            }
+        }
+
+        function fadeOutAndRemove(element) {
+            setTimeout(() => {
+                element.style.opacity = '0';
+                setTimeout(() => {
+                    element.remove();
+                    backgroundImages.splice(backgroundImages.indexOf(element), 1);
+                    createBackgroundElement('background-image');
+                }, 2000);
+            }, Math.random() * 10000 + 5000);
+        }
+
+        function showProjectInfo() {
+            hideAllContent();
+            setTimeout(() => {
+                document.getElementById('project-info').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('project-info').classList.remove('hidden');
+                }, 50);
+            }, 500);
+        }
+
+        function showProjectStart() {
+            hideAllContent();
+            setTimeout(() => {
+                document.getElementById('project-start').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('project-start').classList.remove('hidden');
+                }, 50);
+            }, 500);
+        }
+
+        function showWhyNot() {
+            hideAllContent();
+            setTimeout(() => {
+                document.getElementById('why-not').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('why-not').classList.remove('hidden');
+                }, 50);
+            }, 500);
+        }
+
+        function showWelcomeContent() {
+            hideAllContent();
+            setTimeout(() => {
+                document.getElementById('welcome-content').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('welcome-content').classList.remove('hidden');
+                }, 50);
+            }, 500);
+        }
+
+        function showDownloadContent() {
+            hideAllContent();
+            setTimeout(() => {
+                document.getElementById('download-content').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('download-content').classList.remove('hidden');
+                }, 50);
+            }, 500);
+        }
+
+        function showPatchRomContent() {
+            hideAllContent();
+            setTimeout(() => {
+                document.getElementById('patch-rom-content').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('patch-rom-content').classList.remove('hidden');
+                }, 50);
+            }, 500);
+        }
+        
+        function hideAllContent() {
+            const contents = ['welcome-content', 'project-info', 'project-start', 'download-content', 'patch-rom-content', 'why-not'];
+            contents.forEach(id => {
+                const element = document.getElementById(id);
+                element.classList.add('hidden');
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 500);
+            });
+        }
+
+        function updateFileName(inputId, spanId) {
+            const input = document.getElementById(inputId);
+            const span = document.getElementById(spanId);
+            if (input.files.length > 0) {
+                span.textContent = input.files[0].name;
+            } else {
+                span.textContent = "Ingen fil vald";
+            }
+        }
+
+        function handleRomFileChange() {
+            const input = document.getElementById('romFile');
+            const statusElement = document.getElementById('romFileStatus');
+            const bpsFileButton = document.getElementById('bpsFileButton');
+
+            if (input.files.length > 0) {
+                const file = input.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const arrayBuffer = e.target.result;
+                    const marcFile = new MarcFile(arrayBuffer);
+                    romCrc32 = crc32(marcFile).toString(16).padStart(8, '0');
+
+                    updateFileName('romFile', 'romFileName');
+                    statusElement.style.display = 'flex';
+
+                    if (romCrc32 === '946fd0f7' || romCrc32 === '946fd0f1') {
+                        statusElement.classList.add('valid');
+                        statusElement.classList.remove('invalid');
+                        bpsFileButton.disabled = false;
+                    } else {
+                        statusElement.classList.add('invalid');
+                        statusElement.classList.remove('valid');
+                        bpsFileButton.disabled = true;
+                    }
+
+                    checkPatchButtonStatus();
+                };
+
+                reader.readAsArrayBuffer(file);
+            } else {
+                updateFileName('romFile', 'romFileName');
+                statusElement.style.display = 'none';
+                bpsFileButton.disabled = true;
+                romCrc32 = '';
+                checkPatchButtonStatus();
+            }
+        }
+
+        function handleBpsFileChange() {
+            const input = document.getElementById('bpsFile');
+            const statusElement = document.getElementById('bpsFileStatus');
+
+            if (input.files.length > 0) {
+                const file = input.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const arrayBuffer = e.target.result;
+                    const marcFile = new MarcFile(arrayBuffer);
+                    bpsCrc32 = crc32(marcFile).toString(16).padStart(8, '0');
+
+                    updateFileName('bpsFile', 'bpsFileName');
+                    statusElement.style.display = 'flex';
+
+                    if ((romCrc32 === '946fd0f7' && bpsCrc32 === '2144df1c') || 
+                        (romCrc32 === '946fd0f1' && bpsCrc32 === '2144df1b')) {
+                        statusElement.classList.add('valid');
+                        statusElement.classList.remove('invalid');
+                    } else {
+                        statusElement.classList.add('invalid');
+                        statusElement.classList.remove('valid');
+                    }
+
+                    checkPatchButtonStatus();
+                };
+
+                reader.readAsArrayBuffer(file);
+            } else {
+                updateFileName('bpsFile', 'bpsFileName');
+                statusElement.style.display = 'none';
+                bpsCrc32 = '';
+                checkPatchButtonStatus();
+            }
+        }
+
+        function checkPatchButtonStatus() {
+            const romStatusElement = document.getElementById('romFileStatus');
+            const bpsStatusElement = document.getElementById('bpsFileStatus');
+            const patchButton = document.getElementById('patchButton');
+
+            if (romStatusElement.classList.contains('valid') && bpsStatusElement.classList.contains('valid')) {
+                patchButton.disabled = false;
+            } else {
+                patchButton.disabled = true;
+            }
+        }
+
+        function patchRom() {
+            console.log('Patchning startar...');
+            const romFile = document.getElementById('romFile').files[0];
+            const bpsFile = document.getElementById('bpsFile').files[0];
+
+            if (!romFile || !bpsFile) {
+                alert('Vänligen välj både en ROM-fil och en BPS-patch.');
+                return;
+            }
+
+            const romReader = new FileReader();
+            const bpsReader = new FileReader();
+
+            romReader.onload = function() {
+                console.log('ROM-fil laddad.');
+                const romArrayBuffer = romReader.result;
+                const rom = new MarcFile(romArrayBuffer);
+
+                bpsReader.onload = function() {
+                    console.log('BPS-patch laddad.');
+                    const bpsArrayBuffer = bpsReader.result;
+                    const patchFile = new MarcFile(bpsArrayBuffer);
+                    const patch = parseBPSFile(patchFile);
+
+                    try {
+                        const patchedRom = patch.apply(rom);
+                        console.log('Patchning lyckades.');
+                        const patchedRomBlob = new Blob([patchedRom._u8array], { type: 'application/octet-stream' });
+                        const downloadLink = document.getElementById('downloadLink');
+                        downloadLink.href = URL.createObjectURL(patchedRomBlob);
+                        downloadLink.download = 'patched-rom.z64';
+                        downloadLink.style.display = 'block';
+                        downloadLink.textContent = 'Spara patchad ROM';
+                    } catch (error) {
+                        console.error('Fel vid patchning:', error);
+                        alert('Fel vid patchning: ' + error.message);
+                    }
+                };
+
+                bpsReader.readAsArrayBuffer(bpsFile);
+            };
+
+            romReader.readAsArrayBuffer(romFile);
+        }
+
+        // Skapa initiala bakgrundselement
+        for (let i = 0; i < 30; i++) {
+            createBackgroundElement('background-image');
+        }
+
+        setInterval(createFairy, 1000);
+        setInterval(() => {
+            if (backgroundImages.length < 30) {
+                createBackgroundElement('background-image');
+            }
+        }, 2000);
+    </script>
+    <script src="js/crc.js"></script>
+    <script src="js/zip.js/zip.js"></script>
+    <script src="js/zip.js/inflate.js"></script>
+    <script src="js/marc-file.js"></script>
+    <script src="js/bps.js"></script>
+    <script src="js/rompatcher.js"></script>
 </body>
 </html>
